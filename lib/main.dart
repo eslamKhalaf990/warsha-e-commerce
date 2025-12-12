@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_commerce/services/orders_service.dart';
 import 'package:warsha_commerce/services/products_service.dart';
+import 'package:warsha_commerce/services/user_service.dart';
+import 'package:warsha_commerce/view_models/cart_v_m.dart';
 import 'package:warsha_commerce/view_models/product_v_m.dart';
-import 'package:warsha_commerce/views/home.dart';
-import 'package:warsha_commerce/views/shopping_cart.dart';
+import 'package:warsha_commerce/view_models/user_v_m.dart';
+import 'package:warsha_commerce/views/home/home.dart';
+import 'package:warsha_commerce/views/shopping_cart/shopping_cart.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:warsha_commerce/views/sign_in/sign_in.dart';
 
 void main() {
   runApp(
@@ -12,19 +17,31 @@ void main() {
       providers: [
         //providers used for dependency injection
         Provider<ProductService>(create: (_) => ProductService()),
+        Provider<OrdersService>(create: (_) => OrdersService()),
+        Provider<UserService>(create: (_) => UserService()),
 
+        ChangeNotifierProvider<UserViewModel>(
+          create: (context) => UserViewModel(context.read<UserService>()),
+        ),
+
+        //injecting product with api services
+        ChangeNotifierProvider<CartVM>(
+          create: (context) => CartVM(
+            context.read<OrdersService>(),
+            context.read<UserViewModel>(),
+          ),
+        ),
 
         //injecting product with api services
         ChangeNotifierProvider<ProductVM>(
-          create: (context) => ProductVM(
-            context.read<ProductService>(),
-          ),
+          create: (context) => ProductVM(context.read<ProductService>()),
         ),
       ],
       child: const MyApp(),
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -34,16 +51,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'El Warsha',
       debugShowCheckedModeBanner: false,
-        // Use settings model locale, fallback to 'en'
-        locale: Locale('ar', 'AE'),
-        supportedLocales: const [
-          Locale('ar', 'AE'),
-        ],
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
+      // Use settings model locale, fallback to 'en'
+      locale: Locale('ar', 'AE'),
+      supportedLocales: const [Locale('ar', 'AE')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: ThemeData(
         fontFamily: 'cairo',
         textSelectionTheme: TextSelectionThemeData(
@@ -51,9 +66,7 @@ class MyApp extends StatelessWidget {
           selectionColor: Colors.black.withAlpha(50),
           selectionHandleColor: Colors.black.withAlpha(50),
         ),
-        dividerTheme: DividerThemeData(
-          color: Colors.grey.shade300,
-        ),
+        dividerTheme: DividerThemeData(color: Colors.grey.shade300),
         colorScheme: ColorScheme.light(
           onPrimary: Colors.white,
           onTertiary: Colors.white,
@@ -67,7 +80,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => const Home(),
         '/shopping_cart': (context) => const ShoppingCart(),
-      }
+        '/profile': (context) => const DeliveryDetailsPage(),
+      },
     );
   }
 }

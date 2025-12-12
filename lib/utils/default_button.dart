@@ -29,12 +29,12 @@ class DefaultButton extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         color: isValid ?? true
-            ? Colors.blue.shade500
-            : Colors.blue.shade500.withAlpha(Constants.OPACITY_08),
-        borderRadius: BorderRadius.circular(border ?? 15.0),
+            ? Theme.of(context).colorScheme.tertiary
+            : Theme.of(context).colorScheme.tertiary.withAlpha(Constants.OPACITY_08),
+        borderRadius: BorderRadius.circular(border ?? 5.0),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(border ?? 15.0),
+        borderRadius: BorderRadius.circular(border ?? 5.0),
         child: MaterialButton(
           onPressed: isValid == null || isValid! ? onTap : null,
           child: Center(

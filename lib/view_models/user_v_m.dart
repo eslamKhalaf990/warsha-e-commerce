@@ -6,7 +6,7 @@ import 'package:warsha_commerce/services/user_service.dart';
 class UserViewModel extends ChangeNotifier {
   bool isLoading = false;
   final UserService _userService;
-  String token = "-";
+  String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJla2hhbGFmIiwiaWF0IjoxNzY1NTczNTU2LCJleHAiOjE3NjU2MDIzNTZ9.HRrg59z4Q8UYEJLDkW8alFIFgtU_GOMp3r-XfUM_BYM";
 
   UserViewModel(this._userService);
 
