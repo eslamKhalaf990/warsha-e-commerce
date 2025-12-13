@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:warsha_commerce/controllers/time_line.dart';
 import 'package:warsha_commerce/views/shopping_cart/cart_items.dart';
 import 'package:warsha_commerce/views/shopping_cart/order_summary.dart';
+import 'package:warsha_commerce/views/sign_in/sign_in.dart';
 
 import 'timeline_stepper.dart';
 
 class ShoppingCart extends StatelessWidget {
-  const ShoppingCart({super.key});
+  ShoppingCart({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,36 +27,19 @@ class ShoppingCart extends StatelessWidget {
                     vertical: 40.0,
                     horizontal: isMobile ? 20.0 : 80.0,
                   ),
-                  child: Column(
-                    children: [
-                      const TimelineStepper(),
-                      const SizedBox(height: 50),
+                  child: Consumer<TimelineController>(
+                    builder: (context, timeline, child) => Column(
+                      children: [
+                        const TimelineStepper(),
+                        const SizedBox(height: 50),
 
-                      if (isMobile)
-                        Column(
-                          children: [
-                            RightCartColumn(),
-                            const SizedBox(height: 40),
-                            const OrderSummary(),
-                          ],
-                        )
-                      else
-                      // Desktop: Row (Side by Side)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                flex: 10,
-                                child: RightCartColumn()
-                            ),
-                            const SizedBox(width: 40),
-                            const Expanded(
-                                flex: 6,
-                                child: OrderSummary()
-                            ),
-                          ],
-                        ),
-                    ],
+                        if (isMobile)
+                          timeline.mobileSteps[timeline.page]
+                        else
+                        // Desktop: Row (Side by Side)
+                          timeline.desktopSteps[timeline.page]
+                      ],
+                    ),
                   ),
                 ),
               );

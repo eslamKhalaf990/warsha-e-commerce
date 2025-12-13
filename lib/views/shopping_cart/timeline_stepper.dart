@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:warsha_commerce/controllers/time_line.dart';
 
 class TimelineStepper extends StatelessWidget {
   const TimelineStepper({super.key});
@@ -12,18 +14,21 @@ class TimelineStepper extends StatelessWidget {
           style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 40),
-        // Changed SizedBox(width: 600) to Constraints to prevent overflow on mobile
         Container(
           constraints: const BoxConstraints(maxWidth: 600),
           width: double.infinity,
-          child: Row(
-            children: [
-              _stepWidget("1", "السلة", context, isActive: true),
-              _stepDivider(context),
-              _stepWidget("2", "الدفع", context),
-              _stepDivider(context),
-              _stepWidget("3", "اكتمل", context), // Shortened text for mobile
-            ],
+          child: Consumer<TimelineController>(
+            builder: (context, timeline, child) => Row(
+              children: [
+                _stepWidget("1", "تسجيل الدخول", context, isActive: timeline.page == 0),
+                _stepDivider(context),
+                _stepWidget("2", "السلة", context, isActive: timeline.page == 1),
+                _stepDivider(context),
+                _stepWidget("3", "الدفع", context, isActive: timeline.page == 2),
+                _stepDivider(context),
+                _stepWidget("4", "اكتمل", context, isActive: timeline.page == 3),
+              ],
+            ),
           ),
         ),
       ],

@@ -66,7 +66,6 @@ class CartVM with ChangeNotifier {
 
     try {
       // 4. Send Request (toJson handles the formatting now)
-      print("Sending Order: ${requestModel.toJson()}");
       final response = await _ordersService.addOrder(requestModel, _userViewModel.token);
 
       _isLoading = false;

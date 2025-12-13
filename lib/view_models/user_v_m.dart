@@ -6,11 +6,11 @@ import 'package:warsha_commerce/services/user_service.dart';
 class UserViewModel extends ChangeNotifier {
   bool isLoading = false;
   final UserService _userService;
-  String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJla2hhbGFmIiwiaWF0IjoxNzY1NTczNTU2LCJleHAiOjE3NjU2MDIzNTZ9.HRrg59z4Q8UYEJLDkW8alFIFgtU_GOMp3r-XfUM_BYM";
+  String token = "-";
 
   UserViewModel(this._userService);
 
-  Future<String> login (String username, String password) async {
+  Future<String> login(String username, String password) async {
     String status = "";
     try {
       isLoading = true;

@@ -7,52 +7,9 @@ import 'package:warsha_commerce/utils/const_values.dart';
 import 'base_url.dart';
 
 class CustomerService {
-  // This class will handle the logic for attendance management.
-  Future<http.Response> getAllCustomers(String token) async {
-    debugPrint("getAllCustomers called");
-    http.Response response;
-    try {
-      response = await http.get(
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          "Authorization": 'Bearer $token',
-        },
-        Uri.parse(
-          Baseurl.getAllCustomersAPI,
-        ),
-      ).timeout(const Duration(seconds: Constants.TIMEOUT));
-    } on TimeoutException {
-      throw Exception('The request timed out. Please try again later.');
-    } catch (e) {
-      throw Exception('Failed to get your requests: $e');
-    }
-    return response;
-  }
-
-  Future<http.Response> getGovernorateCounts(String token) async {
-    debugPrint("getGovernorateCounts called");
-    http.Response response;
-    try {
-      response = await http.get(
-        Uri.parse(
-          Baseurl.countGovernoratePerCustomerAPI,
-        ),
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization": 'Bearer $token',
-        },
-      ).timeout(const Duration(seconds: Constants.TIMEOUT));
-
-    } on TimeoutException {
-      throw Exception('The request timed out. Please check your internet connection and try again.');
-    } catch (e) {
-      throw Exception('Failed to get governorate counts: $e');
-    }
-    return response;
-  }
 
   Future<http.Response> addCustomer(String name, String governorate,
-      String phone, String address, String secondaryPhone, String city,String token) async {
+      String phone, String address, String secondaryPhone, String city, String email, String password) async {
     debugPrint("addCustomer called $name");
     http.Response response;
     try {
@@ -60,7 +17,6 @@ class CustomerService {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            "Authorization": 'Bearer $token',
           },
           Uri.parse(
             Baseurl.addCustomerAPI,
@@ -68,6 +24,8 @@ class CustomerService {
           body: jsonEncode({
             "fullName": name,
             "phone": phone,
+            "email": email,
+            "password": password,
             "governorate": governorate,
             "address": address,
             "secondaryPhone": secondaryPhone,
@@ -79,34 +37,6 @@ class CustomerService {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
       throw Exception('Failed to add your new customer: $e');
-    }
-    return response;
-  }
-
-  Future<http.Response> updateCustomer(String id, String name, String governorate,
-      String phone, String address, String token) async {
-    debugPrint("updateCustomer with id: $id");
-    http.Response response;
-    try {
-      response = await http.put(
-        Uri.parse('${Baseurl.updateCustomerAPI}/$id'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          "Authorization": 'Bearer $token',
-        },
-        body: jsonEncode({
-          "fullName": name,
-          "phone": phone,
-          "governorate": governorate,
-          "address": address,
-        }),
-      ).timeout(const Duration(seconds: Constants.TIMEOUT));
-
-    } on TimeoutException {
-      throw Exception('The request timed out. Please try again later.');
-    } catch (e) {
-      throw Exception('Failed to update the customer: $e');
     }
     return response;
   }
