@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_commerce/utils/default_button.dart';
-import 'package:warsha_commerce/utils/navigator.dart';
 import 'package:warsha_commerce/view_models/customers_v_m.dart';
-import 'package:warsha_commerce/view_models/user_v_m.dart';
 import 'package:warsha_commerce/views/sign_in/login.dart';
 import 'package:warsha_commerce/views/sign_in/sign_up.dart';
+
+import '../../utils/const_values.dart';
 
 class DeliveryDetailsPage extends StatefulWidget {
   const DeliveryDetailsPage({super.key});
@@ -41,10 +39,10 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: Constants.BORDER_RADIUS_5,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withAlpha(10),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -57,7 +55,7 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
                       margin: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: const Color(0xFFF5F5F5),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: Constants.BORDER_RADIUS_5,
                       ),
                       child: Row(
                         children: [
@@ -72,7 +70,7 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
                                   color: customerVM.isLogin
                                       ? const Color(0xFF222222)
                                       : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: Constants.BORDER_RADIUS_5,
                                 ),
                                 child: Text(
                                   'تسجيل الدخول',
@@ -99,7 +97,7 @@ class _DeliveryDetailsPageState extends State<DeliveryDetailsPage> {
                                   color: !customerVM.isLogin
                                       ? const Color(0xFF222222)
                                       : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: Constants.BORDER_RADIUS_5,
                                 ),
                                 child: Text(
                                   'إنشاء حساب جديد',

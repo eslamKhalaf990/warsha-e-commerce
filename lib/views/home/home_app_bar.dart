@@ -87,7 +87,7 @@ class WarshaAppBar extends StatelessWidget {
                 const SizedBox(width: 8),
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/profile');
+                    Navigator.pushNamed(context, '/login');
                   },
                   icon: const Icon(Icons.person_outline, color: Colors.black87),
                 ),

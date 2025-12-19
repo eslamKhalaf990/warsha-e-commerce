@@ -29,7 +29,7 @@ class CartItemRow extends StatelessWidget {
           height: isSmallScreen ? 80 : 110,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.tertiary.withAlpha(10),
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: Constants.BORDER_RADIUS_5,
             border: Border.all(
               width: 1,
               color: Theme.of(context).colorScheme.tertiary.withAlpha(20),
@@ -43,7 +43,7 @@ class CartItemRow extends StatelessWidget {
               borderRadius: Constants.BORDER_RADIUS_20,
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: Constants.BORDER_RADIUS_5,
               child: Image.network(
                 "${Baseurl.baseURLImages}${ImageHelper.extractFileId(data.image)}",
                 width: isSmallScreen ? 70 : 100, // Smaller image on mobile
@@ -126,7 +126,7 @@ class CartItemRow extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.tertiary.withAlpha(10),
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: Constants.BORDER_RADIUS_5,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

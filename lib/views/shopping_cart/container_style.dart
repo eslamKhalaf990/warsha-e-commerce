@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:warsha_commerce/utils/const_values.dart';
 
 class StyledContainer extends StatelessWidget {
   final Widget child;
@@ -18,7 +19,7 @@ class StyledContainer extends StatelessWidget {
       // 2. The Outer Border & Shadow
       decoration: BoxDecoration(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: Constants.BORDER_RADIUS_5,
 
         border: Border.all(
           width: 1,
@@ -38,6 +39,7 @@ class StyledContainer extends StatelessWidget {
         padding: padding ?? const EdgeInsets.all(30),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.onPrimary,
+          borderRadius: Constants.BORDER_RADIUS_5,
         ),
         child: child,
       ),

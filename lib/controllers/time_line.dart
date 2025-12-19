@@ -1,6 +1,6 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:warsha_commerce/views/orders/order_completed.dart';
+import 'package:warsha_commerce/views/payment/payment_step.dart';
 import 'package:warsha_commerce/views/shopping_cart/cart_items.dart';
 import 'package:warsha_commerce/views/shopping_cart/order_summary.dart';
 import 'package:warsha_commerce/views/sign_in/sign_in.dart';
@@ -24,6 +24,8 @@ class TimelineController extends ChangeNotifier {
         ),
       ],
     ),
+    Payment(),
+    OrderCompleted(orderNumber: '', totalAmount: '',),
   ];
 
   final List<Widget> mobileSteps = [
@@ -34,7 +36,10 @@ class TimelineController extends ChangeNotifier {
         const SizedBox(height: 40),
         const OrderSummary(),
       ],
-    )
+    ),
+    Payment(),
+    OrderCompleted(orderNumber: '', totalAmount: '',),
+
   ];
 
   void nextPage() {

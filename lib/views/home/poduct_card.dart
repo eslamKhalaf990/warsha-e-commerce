@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_commerce/models/product_model.dart';
 import 'package:warsha_commerce/services/base_url.dart';
+import 'package:warsha_commerce/utils/const_values.dart';
 import 'package:warsha_commerce/utils/image_helper.dart';
 import 'package:warsha_commerce/view_models/cart_v_m.dart';
 
@@ -56,9 +57,7 @@ class _ProductCardState extends State<ProductCard>
             color: Colors.white,
             // Modern subtle border for structure
             border: Border.all(color: Colors.grey.shade200),
-            borderRadius: BorderRadius.circular(
-              5,
-            ), // Slight rounding looks more premium
+            borderRadius: Constants.BORDER_RADIUS_5, // Slight rounding looks more premium
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(_isHovered ? 0.08 : 0.0),
@@ -79,9 +78,7 @@ class _ProductCardState extends State<ProductCard>
                   fit: StackFit.expand,
                   children: [
                     ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(5),
-                      ),
+                      borderRadius: Constants.BORDER_RADIUS_5,
                       child: Opacity(
                         opacity: isOutOfStock ? 0.6 : 1.0,
                         child: CachedNetworkImage(
@@ -162,7 +159,7 @@ class _ProductCardState extends State<ProductCard>
                                 ? Container(
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
+                                      borderRadius: Constants.BORDER_RADIUS_5,
                                     ),
                                     padding: const EdgeInsets.symmetric(horizontal: 20),
                                     child: Row(
@@ -206,7 +203,7 @@ class _ProductCardState extends State<ProductCard>
                                       padding: EdgeInsets
                                           .zero, // Remove padding to fit height
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
+                                        borderRadius: Constants.BORDER_RADIUS_5,
                                       ),
                                     ),
                                     child: const Text(
@@ -376,7 +373,7 @@ class _ProductCardState extends State<ProductCard>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: Constants.BORDER_RADIUS_5,
       ),
       child: Text(
         text,

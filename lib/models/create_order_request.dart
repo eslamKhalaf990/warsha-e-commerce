@@ -20,7 +20,6 @@ class CreateOrderItem {
 
 // This is the main request model
 class CreateOrderRequest {
-  final int customerId;
   final double delivery;
   final double discount;
   final String downPayment;
@@ -31,7 +30,6 @@ class CreateOrderRequest {
   final List<CreateOrderItem> items;
 
   CreateOrderRequest({
-    required this.customerId,
     required this.delivery,
     required this.discount,
     required this.downPayment,
@@ -44,7 +42,6 @@ class CreateOrderRequest {
 
   Map<String, dynamic> toJson() {
     return {
-      'customerId': customerId,
       'downPayment' : downPayment,
       'bankAccountId' : bankAccountId,
       'delivery' : delivery,

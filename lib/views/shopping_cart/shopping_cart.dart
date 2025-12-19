@@ -8,7 +8,7 @@ import 'package:warsha_commerce/views/sign_in/sign_in.dart';
 import 'timeline_stepper.dart';
 
 class ShoppingCart extends StatelessWidget {
-  ShoppingCart({super.key});
+  const ShoppingCart({super.key});
 
   @override
   Widget build(BuildContext context) {

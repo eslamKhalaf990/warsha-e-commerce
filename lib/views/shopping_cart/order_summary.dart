@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_commerce/controllers/time_line.dart';
+import 'package:warsha_commerce/utils/const_values.dart';
 import 'package:warsha_commerce/utils/default_button.dart';
+import 'package:warsha_commerce/utils/navigator.dart';
 import 'package:warsha_commerce/view_models/cart_v_m.dart';
 import 'package:warsha_commerce/views/shopping_cart/container_style.dart';
 
@@ -24,7 +27,7 @@ class OrderSummary extends StatelessWidget {
             padding: const EdgeInsetsDirectional.fromSTEB(15, 5, 5, 5),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.tertiary.withAlpha(10),
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: Constants.BORDER_RADIUS_5,
             ),
             child: Row(
               children: [
@@ -45,7 +48,7 @@ class OrderSummary extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: Constants.BORDER_RADIUS_5,
                   ),
                   child: Text(
                     "تطبيق",
@@ -83,15 +86,32 @@ class OrderSummary extends StatelessWidget {
           ),
           const SizedBox(height: 30),
 
-          DefaultButton(
-            onTap: () {
-              Provider.of<CartVM>(
-                context,
-                listen: false,
-              ).placeOrder(customerId: 4084);
-            },
-            title: "الذهاب للدفع",
-            margin: EdgeInsets.zero,
+          Consumer<TimelineController>(
+            builder: (context, timeline, child) => DefaultButton(
+              onTap: () async {
+                // final state = await Provider.of<CartVM>(
+                //   context,
+                //   listen: false,
+                // ).placeOrder();
+                //
+                // if(state){
+                //   ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+                //       SnackBar(
+                //         content: Text( "تم تأكيد طلبك"
+                //         ),
+                //         duration: const Duration(seconds: 2),
+                //         behavior: SnackBarBehavior
+                //             .floating, // Floats above bottom nav
+                //         backgroundColor: Theme.of(context).colorScheme.tertiary,
+                //       ),
+                //   );
+                // }
+                timeline.changePage(2);
+
+              },
+              title: "الذهاب للدفع",
+              margin: EdgeInsets.zero,
+            ),
           ),
         ],
       ),

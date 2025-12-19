@@ -31,10 +31,10 @@ class DefaultButton extends StatelessWidget {
         color: isValid ?? true
             ? Theme.of(context).colorScheme.tertiary
             : Theme.of(context).colorScheme.tertiary.withAlpha(Constants.OPACITY_08),
-        borderRadius: BorderRadius.circular(border ?? 5.0),
+        borderRadius: Constants.BORDER_RADIUS_5,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(border ?? 5.0),
+        borderRadius: Constants.BORDER_RADIUS_5,
         child: MaterialButton(
           onPressed: isValid == null || isValid! ? onTap : null,
           child: Center(

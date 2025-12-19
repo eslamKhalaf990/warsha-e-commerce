@@ -12,6 +12,7 @@ import 'package:warsha_commerce/view_models/user_v_m.dart';
 import 'package:warsha_commerce/views/home/home.dart';
 import 'package:warsha_commerce/views/shopping_cart/shopping_cart.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:warsha_commerce/views/sign_in/profile.dart';
 import 'package:warsha_commerce/views/sign_in/sign_in.dart';
 
 import 'controllers/time_line.dart';
@@ -96,6 +97,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const Home(),
         '/shopping_cart': (context) => ShoppingCart(),
         '/profile': (context) => const DeliveryDetailsPage(),
+        '/login': (context) => const Profile(),
       },
     );
   }

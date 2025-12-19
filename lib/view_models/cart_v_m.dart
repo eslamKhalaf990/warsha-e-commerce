@@ -28,7 +28,6 @@ class CartVM with ChangeNotifier {
   }
 
   Future<bool> placeOrder({
-    required int customerId,
     double delivery = 150.0,
     double discount = 0.0,
     String paymentMethod = "Cash",
@@ -53,7 +52,6 @@ class CartVM with ChangeNotifier {
 
     // 3. Create the Main Request Object
     CreateOrderRequest requestModel = CreateOrderRequest(
-      customerId: customerId,
       delivery: delivery,
       discount: discount,
       downPayment: downPayment,

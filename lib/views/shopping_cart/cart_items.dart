@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_commerce/utils/const_values.dart';
 import 'package:warsha_commerce/view_models/cart_v_m.dart';
+import 'package:warsha_commerce/view_models/user_v_m.dart';
 import 'cart_item.dart'; // Your UI Widget
 import 'container_style.dart'; // Your UI Widget
 
@@ -28,6 +30,7 @@ class RightCartColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartVM>(context);
+    final userVM = Provider.of<UserViewModel>(context);
     final cartItems = cart.items.values.toList();
     final productIds = cart.items.keys.toList();
 
@@ -39,12 +42,52 @@ class RightCartColumn extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           child: Row(
             children: [
-              // Fake Checkbox for visual consistency
+              Expanded(
+                child: Text(
+                    userVM.address
+                ),
+              ),
+              const SizedBox(width: 30),
+
+              // Delete Action
+              InkWell(
+                onTap: () {
+                  // UX: Confirm before deleting everything
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    borderRadius: Constants.BORDER_RADIUS_5,
+                  ),
+                  child: Text(
+                    "تغيير عنوان التوصيل",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onTertiary,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        StyledContainer(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          child: Row(
+            children: [
+
               Container(
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: Constants.BORDER_RADIUS_5,
                   border: Border.all(
                     width: 1,
                     color: Theme.of(context).colorScheme.tertiary,
@@ -76,10 +119,10 @@ class RightCartColumn extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: Constants.BORDER_RADIUS_5,
                   ),
                   child: Text(
-                    "حذف المحدد",
+                    "حذف السلة",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.onTertiary,
@@ -91,7 +134,7 @@ class RightCartColumn extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 25),
+        const SizedBox(height: 20),
 
         // --- Cart Items List (Dynamic) ---
         cartItems.isEmpty

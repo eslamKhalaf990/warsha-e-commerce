@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_commerce/utils/const_values.dart';
 import 'package:warsha_commerce/utils/default_button.dart';
 import 'package:warsha_commerce/utils/navigator.dart';
 import 'package:warsha_commerce/view_models/customers_v_m.dart';
@@ -231,21 +232,21 @@ class SignUpForm extends StatelessWidget {
           horizontal: 16,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: Constants.BORDER_RADIUS_5,
           borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: Constants.BORDER_RADIUS_5,
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.tertiary.withAlpha(0),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: Constants.BORDER_RADIUS_5,
           borderSide: const BorderSide(color: Color(0xFF222222), width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: Constants.BORDER_RADIUS_5,
           borderSide: const BorderSide(color: Colors.red, width: 1),
         ),
       ),

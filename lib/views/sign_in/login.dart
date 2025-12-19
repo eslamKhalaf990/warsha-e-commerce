@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_commerce/controllers/time_line.dart';
+import 'package:warsha_commerce/utils/const_values.dart';
 import 'package:warsha_commerce/utils/default_button.dart';
 import 'package:warsha_commerce/utils/navigator.dart';
 import 'package:warsha_commerce/view_models/user_v_m.dart';
@@ -145,6 +146,7 @@ class LoginForm extends StatelessWidget {
     required IconData icon,
     TextInputType inputType = TextInputType.text,
     bool isPassword = false,
+    int maxLines = 1,
     String? Function(String?)? validator,
     required BuildContext context,
   }) {
@@ -152,32 +154,42 @@ class LoginForm extends StatelessWidget {
       controller: controller,
       keyboardType: inputType,
       obscureText: isPassword,
+      maxLines: maxLines,
       validator: validator,
       style: const TextStyle(fontSize: 15),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
-        prefixIcon: Icon(icon, color: Colors.grey[500], size: 22),
+        hintStyle: TextStyle(
+          color: Theme.of(context).colorScheme.tertiary,
+          fontSize: 14,
+        ),
+        prefixIcon: Icon(
+          icon,
+          color: Theme.of(context).colorScheme.tertiary,
+          size: 22,
+        ),
         filled: true,
-        fillColor: const Color(0xFFFAFAFA),
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 18,
+        fillColor: Theme.of(context).colorScheme.tertiary.withAlpha(10),
+        contentPadding: EdgeInsets.symmetric(
+          vertical: maxLines > 1 ? 16 : 18,
           horizontal: 16,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.grey[300]!),
+          borderRadius: Constants.BORDER_RADIUS_5,
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.grey[300]!),
+          borderRadius: Constants.BORDER_RADIUS_5,
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.tertiary.withAlpha(0),
+          ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: Constants.BORDER_RADIUS_5,
           borderSide: const BorderSide(color: Color(0xFF222222), width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: Constants.BORDER_RADIUS_5,
           borderSide: const BorderSide(color: Colors.red, width: 1),
         ),
       ),
