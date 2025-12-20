@@ -3,6 +3,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_commerce/utils/const_values.dart';
 import 'package:warsha_commerce/utils/default_button.dart';
+import 'package:warsha_commerce/utils/governerates.dart';
 import 'package:warsha_commerce/utils/navigator.dart';
 import 'package:warsha_commerce/view_models/customers_v_m.dart';
 
@@ -116,7 +117,15 @@ class SignUpForm extends StatelessWidget {
             controller: _cityController,
             hint: 'مثال: القاهرة، الجيزة',
             icon: Iconsax.location_copy,
-            validator: (value) => value!.isEmpty ? 'يرجى إدخال المدينة' : null,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'يرجى إدخال المدينة';
+              }
+              if (!Governorates.isValid(value)) {
+                return 'يرجى إدخال محافظة صحيحة (مثال: القاهرة)';
+              }
+              return null;
+            },
             context: context,
           ),
           const SizedBox(height: 20),

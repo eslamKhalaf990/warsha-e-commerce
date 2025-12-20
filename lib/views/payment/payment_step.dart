@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:warsha_commerce/controllers/time_line.dart';
 import 'package:warsha_commerce/utils/const_values.dart';
 import 'package:warsha_commerce/utils/default_button.dart';
+import 'package:warsha_commerce/utils/governerates.dart';
 import 'package:warsha_commerce/utils/navigator.dart';
 import 'package:warsha_commerce/view_models/cart_v_m.dart';
+import 'package:warsha_commerce/view_models/user_v_m.dart';
 import 'package:warsha_commerce/views/shopping_cart/container_style.dart';
 
 class Payment extends StatefulWidget {
@@ -172,9 +174,6 @@ class _PaymentState extends State<Payment> {
               value: value,
               groupValue: selectedPaymentMethod,
               onChanged: (String? newValue) {
-                // setState(() {
-                //   selectedPaymentMethod = newValue!;
-                // });
               },
               activeColor: Theme.of(context).colorScheme.tertiary,
             ),
@@ -317,36 +316,24 @@ class _PaymentState extends State<Payment> {
             "ملخص الطلب",
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 20),
-
-          _summaryRow(
-            "المجموع الفرعي",
-            context,
-            "${Provider.of<CartVM>(context).totalAmount} EGP",
-          ),
+          const SizedBox(height: 30),
+          _summaryRow("المجموع الفرعي", context, "${Provider.of<CartVM>(context).totalAmount} EGP"),
           const SizedBox(height: 15),
-          _summaryRow(
-            "خصم (-5%)",
-            context,
-            "${(Provider.of<CartVM>(context).totalAmount * 0.05).toStringAsFixed(0)}",
-            isRed: true,
-          ),
-          const SizedBox(height: 15),
-          _summaryRow("رسوم التوصيل", context, "15 EGP"),
-          const SizedBox(height: 20),
-          const Divider(),
+          _summaryRow("رسوم التوصيل", context, Provider.of<CartVM>(context).itemCount == 0 ? "0.0": Governorates.getDeliveryPrice(Provider.of<UserViewModel>(context).governorate).toString()),
+          const SizedBox(height: 30),
+          Divider(),
           const SizedBox(height: 20),
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children:  [
               const Text(
                 "الإجمالي",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
-                "${(Provider.of<CartVM>(context).totalAmount * 0.95 + 15).toStringAsFixed(0)} EGP",
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
+                "${Provider.of<CartVM>(context).totalAmount + (Provider.of<CartVM>(context).itemCount == 0 ? 0 : Governorates.getDeliveryPrice(Provider.of<UserViewModel>(context).governorate))} EGP",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
               ),
             ],
           ),
@@ -360,7 +347,7 @@ class _PaymentState extends State<Payment> {
                   listen: false,
                 ).placeOrder();
 
-                if (state) {
+                if (state != null) {
                   ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
                     SnackBar(
                       content: Text(

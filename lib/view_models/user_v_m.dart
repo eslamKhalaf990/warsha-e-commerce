@@ -11,6 +11,8 @@ class UserViewModel extends ChangeNotifier {
   String name = "-";
   String phone = "-";
   String email = "-";
+  String governorate = "-";
+
 
   UserViewModel(this._userService);
 
@@ -29,6 +31,7 @@ class UserViewModel extends ChangeNotifier {
         name = jsonDecode(response.body)["name"];
         phone = jsonDecode(response.body)["phone"];
         email = jsonDecode(response.body)["email"];
+        governorate = jsonDecode(response.body)["governorate"];
 
         debugPrint("Logged in successfully");
       } else {

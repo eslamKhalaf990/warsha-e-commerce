@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:warsha_commerce/models/cart.dart';
 import 'package:warsha_commerce/models/create_order_request.dart';
 import 'package:warsha_commerce/models/orderItemModel.dart';
 import 'package:warsha_commerce/models/orderModel.dart';
+import 'package:warsha_commerce/models/order_response.dart';
 import 'package:warsha_commerce/models/product_model.dart';
 import 'package:warsha_commerce/services/orders_service.dart';
 import 'package:warsha_commerce/view_models/user_v_m.dart';
 
 class CartVM with ChangeNotifier {
   final Map<int, CartItem> _items = {};
+  OrderResponse? orderResponse;
   final OrdersService _ordersService;
   final UserViewModel _userViewModel;
   bool _isLoading = false;
@@ -27,7 +31,7 @@ class CartVM with ChangeNotifier {
     return total;
   }
 
-  Future<bool> placeOrder({
+  Future<OrderResponse?> placeOrder({
     double delivery = 150.0,
     double discount = 0.0,
     String paymentMethod = "Cash",
@@ -70,17 +74,21 @@ class CartVM with ChangeNotifier {
       notifyListeners();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print("Success: ${response.body}");
-        return true;
+        final responseData = jsonDecode(response.body);
+        orderResponse = OrderResponse.fromJson(responseData);
+        return orderResponse;
       } else {
         print("Failed: ${response.statusCode} | ${response.body}");
-        return false;
+        return null;
       }
     } catch (error) {
       print("Network Error: $error");
       _isLoading = false;
       notifyListeners();
-      return false;
+      return null;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 

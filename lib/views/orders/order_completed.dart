@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:warsha_commerce/utils/const_values.dart';
 import 'package:warsha_commerce/utils/default_button.dart';
+import 'package:warsha_commerce/view_models/cart_v_m.dart';
 import 'package:warsha_commerce/views/shopping_cart/container_style.dart';
 
 class OrderCompleted extends StatelessWidget {
@@ -18,6 +20,8 @@ class OrderCompleted extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartVM = Provider.of<CartVM>(context);
+
     return SingleChildScrollView(
       child: Center(
         child: Container(
@@ -77,7 +81,7 @@ class OrderCompleted extends StatelessWidget {
                         context,
                         icon: Icons.receipt_long_outlined,
                         label: "رقم الطلب",
-                        value: "#$orderNumber",
+                        value: "#${cartVM.orderResponse?.orderId ?? 0000}",
                       ),
 
                       const SizedBox(height: 15),
@@ -101,7 +105,7 @@ class OrderCompleted extends StatelessWidget {
                             ? Icons.money
                             : Icons.credit_card,
                         label: "طريقة الدفع",
-                        value: paymentMethod == 'cash'
+                        value: cartVM.orderResponse?.paymentMethod == null
                             ? "الدفع عند الاستلام"
                             : "بطاقة ائتمان",
                       ),
@@ -114,7 +118,7 @@ class OrderCompleted extends StatelessWidget {
                         context,
                         icon: Icons.payments_outlined,
                         label: "المبلغ الإجمالي",
-                        value: "$totalAmount EGP",
+                        value: "${cartVM.orderResponse?.totalPrice} EGP",
                         valueColor: Theme.of(context).colorScheme.tertiary,
                         valueBold: true,
                       ),
