@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_commerce/controllers/time_line.dart';
 import 'package:warsha_commerce/view_models/cart_v_m.dart';
 import 'package:warsha_commerce/view_models/product_v_m.dart';
+import 'package:warsha_commerce/view_models/user_v_m.dart';
 
 class WarshaAppBar extends StatelessWidget {
   final bool isMobile;
@@ -94,6 +96,10 @@ class WarshaAppBar extends StatelessWidget {
                 const SizedBox(width: 8),
                 IconButton(
                   onPressed: () {
+                    if(Provider.of<UserViewModel>(context, listen: false).token != "-"){
+
+                      Provider.of<TimelineController>(context, listen: false).changePage(1);
+                    }
                     Navigator.pushNamed(context, '/shopping_cart');
                   },
                   icon: Badge(
@@ -101,6 +107,13 @@ class WarshaAppBar extends StatelessWidget {
                     backgroundColor: Colors.black,
                     child: Icon(Icons.shopping_bag_outlined, color: Colors.black87),
                   ),
+                ),
+                const SizedBox(width: 8),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/orders_history');
+                  },
+                  icon: Icon(Icons.work_history_outlined, color: Colors.black87),
                 ),
                 const SizedBox(width: 8),
                 // Theme/Dark Mode Toggle

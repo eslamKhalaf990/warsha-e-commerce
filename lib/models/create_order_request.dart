@@ -20,7 +20,6 @@ class CreateOrderItem {
 
 // This is the main request model
 class CreateOrderRequest {
-  final double delivery;
   final double discount;
   final String downPayment;
   final String bankAccountId;
@@ -30,7 +29,6 @@ class CreateOrderRequest {
   final List<CreateOrderItem> items;
 
   CreateOrderRequest({
-    required this.delivery,
     required this.discount,
     required this.downPayment,
     required this.bankAccountId,
@@ -44,7 +42,6 @@ class CreateOrderRequest {
     return {
       'downPayment' : downPayment,
       'bankAccountId' : bankAccountId,
-      'delivery' : delivery,
       'notes' : notes,
       'orderSource' : orderSource,
       'paymentMethod' : paymentMethod,

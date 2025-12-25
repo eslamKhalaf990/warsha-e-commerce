@@ -7,9 +7,11 @@ import 'package:warsha_commerce/services/user_service.dart';
 import 'package:warsha_commerce/utils/navigator.dart';
 import 'package:warsha_commerce/view_models/cart_v_m.dart';
 import 'package:warsha_commerce/view_models/customers_v_m.dart';
+import 'package:warsha_commerce/view_models/order_v_m.dart';
 import 'package:warsha_commerce/view_models/product_v_m.dart';
 import 'package:warsha_commerce/view_models/user_v_m.dart';
 import 'package:warsha_commerce/views/home/home.dart';
+import 'package:warsha_commerce/views/orders/orders_history.dart';
 import 'package:warsha_commerce/views/shopping_cart/shopping_cart.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:warsha_commerce/views/sign_in/profile.dart';
@@ -42,6 +44,14 @@ void main() {
         //injecting product with api services
         ChangeNotifierProvider<CartVM>(
           create: (context) => CartVM(
+            context.read<OrdersService>(),
+            context.read<UserViewModel>(),
+          ),
+        ),
+
+        //injecting product with api services
+        ChangeNotifierProvider<OrderVM>(
+          create: (context) => OrderVM(
             context.read<OrdersService>(),
             context.read<UserViewModel>(),
           ),
@@ -98,6 +108,7 @@ class MyApp extends StatelessWidget {
         '/shopping_cart': (context) => ShoppingCart(),
         '/profile': (context) => const DeliveryDetailsPage(),
         '/login': (context) => const Profile(),
+        '/orders_history': (context) => const OrdersHistory(),
       },
     );
   }

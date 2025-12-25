@@ -1,11 +1,13 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:warsha_commerce/services/user_service.dart';
 
 class UserViewModel extends ChangeNotifier {
   bool isLoading = false;
   final UserService _userService;
+
+  // State variables
   String token = "-";
   String address = "-";
   String name = "-";
@@ -13,8 +15,28 @@ class UserViewModel extends ChangeNotifier {
   String email = "-";
   String governorate = "-";
 
+  UserViewModel(this._userService) {
+    loadSavedUser();
+  }
 
-  UserViewModel(this._userService);
+  // 1. Restore state from LocalStorage
+  Future<void> loadSavedUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? userDataString = prefs.getString('user_data');
+
+    if (userDataString != null) {
+      final Map<String, dynamic> userMap = jsonDecode(userDataString);
+      token = userMap['token'] ?? "-";
+      address = userMap['address'] ?? "-";
+      name = userMap['name'] ?? "-";
+      phone = userMap['phone'] ?? "-";
+      email = userMap['email'] ?? "-";
+      governorate = userMap['governorate'] ?? "-";
+
+      notifyListeners(); // Update UI with restored data
+      debugPrint("User state restored from storage");
+    }
+  }
 
   Future<String> login(String username, String password) async {
     String status = "";
@@ -24,19 +46,24 @@ class UserViewModel extends ChangeNotifier {
 
       final response = await _userService.login(username, password);
       if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        // Update local variables
+        token = data["token"];
+        address = data["address"];
+        name = data["name"];
+        phone = data["phone"];
+        email = data["email"];
+        governorate = data["governorate"];
+
+        // 2. Persist entire object as a JSON string
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_data', jsonEncode(data));
+
         status = "logged_in";
-
-        token = jsonDecode(response.body)["token"];
-        address = jsonDecode(response.body)["address"];
-        name = jsonDecode(response.body)["name"];
-        phone = jsonDecode(response.body)["phone"];
-        email = jsonDecode(response.body)["email"];
-        governorate = jsonDecode(response.body)["governorate"];
-
-        debugPrint("Logged in successfully");
+        debugPrint("Logged in and data persisted");
       } else {
         status = "failed_login";
-        debugPrint("Failed to login: ${response.statusCode}");
       }
     } catch (e) {
       status = "failed_login";
@@ -48,4 +75,20 @@ class UserViewModel extends ChangeNotifier {
     return status;
   }
 
+  // 3. Clear storage on logout
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user_data');
+
+    // Reset variables
+    token = "-";
+    address = "-";
+    name = "-";
+    phone = "-";
+    email = "-";
+    governorate = "-";
+
+    notifyListeners();
+    debugPrint("🧹 State cleared");
+  }
 }

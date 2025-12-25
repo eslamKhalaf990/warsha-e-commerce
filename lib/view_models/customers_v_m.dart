@@ -33,6 +33,7 @@ class CustomerVM extends ChangeNotifier {
     return status;
   }
 
+
   void toggleLogin(bool state) {
     isLogin = state;
     notifyListeners();

@@ -87,25 +87,9 @@ class OrderSummary extends StatelessWidget {
           Consumer<TimelineController>(
             builder: (context, timeline, child) => DefaultButton(
               onTap: () async {
-                // final state = await Provider.of<CartVM>(
-                //   context,
-                //   listen: false,
-                // ).placeOrder();
-                //
-                // if(state){
-                //   ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-                //       SnackBar(
-                //         content: Text( "تم تأكيد طلبك"
-                //         ),
-                //         duration: const Duration(seconds: 2),
-                //         behavior: SnackBarBehavior
-                //             .floating, // Floats above bottom nav
-                //         backgroundColor: Theme.of(context).colorScheme.tertiary,
-                //       ),
-                //   );
-                // }
-                timeline.changePage(2);
 
+
+                timeline.changePage(2);
               },
               title: "الذهاب للدفع",
               margin: EdgeInsets.zero,

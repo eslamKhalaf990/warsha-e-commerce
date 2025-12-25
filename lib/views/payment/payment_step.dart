@@ -361,6 +361,10 @@ class _PaymentState extends State<Payment> {
                     ),
                   );
                   timeline.changePage(3);
+                  Provider.of<CartVM>(
+                    context,
+                    listen: false,
+                  ).clear();
                 }
               },
               title: "تأكيد الطلب",

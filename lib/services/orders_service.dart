@@ -34,6 +34,27 @@ class OrdersService {
     return response;
   }
 
+    Future<http.Response> getAllOrders(String token) async {
+      debugPrint("getAllOrders called");
+      http.Response response;
+      try {
+        response = await http.get(
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "Authorization": 'Bearer $token',
+          },
+          Uri.parse(
+            Baseurl.getAllOrderAPI,
+          ),
+        ).timeout(const Duration(seconds: Constants.TIMEOUT));
+      } on TimeoutException {
+        throw Exception('The request timed out. Please try again later.');
+      } catch (e) {
+        throw Exception('Failed to get your orders: $e');
+      }
+      return response;
+    }
+
   Future<http.Response> cancelOrder(String order, String token) async {
     debugPrint("cancelOrder called $order");
     http.Response response;

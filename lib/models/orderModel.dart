@@ -16,7 +16,6 @@ class OrderModel {
   final CustomerModel? customer; // CHANGED: Now nullable
   final List<OrderItemModel> orderItems;
 
-  // CHANGED: Constructor now uses default values and doesn't require all fields
   OrderModel({
     this.customerId,
     this.orderId,
@@ -30,40 +29,9 @@ class OrderModel {
     this.paymentMethod,
     this.orderDate,
     this.customer,
-    required this.orderItems, // Only 'orderItems' is truly required
+    required this.orderItems,
   });
 
-  OrderModel copyWith({
-    CustomerModel? customer,
-    List<OrderItemModel>? orderItems,
-    double? discount,
-    double? delivery,
-    String? notes,
-    double? totalPrice,
-    double? downPayment,
-    String? orderSource,
-    String? paymentMethod,
-    DateTime? orderDate,
-    int? orderId,
-    String? status,
-  }) {
-    return OrderModel(
-      customer: customer ?? this.customer,
-      orderItems: orderItems ?? this.orderItems,
-      discount: discount ?? this.discount,
-      delivery: delivery ?? this.delivery,
-      notes: notes ?? this.notes,
-      totalPrice: totalPrice ?? this.totalPrice,
-      downPayment: downPayment ?? this.downPayment,
-      orderSource: orderSource ?? this.orderSource,
-      paymentMethod: paymentMethod ?? this.paymentMethod,
-      orderDate: orderDate ?? this.orderDate,
-      orderId: orderId ?? this.orderId,
-      status: status ?? this.status,
-    );
-  }
-
-  // Your fromJson is already excellent and safe! No changes needed.
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     var itemsList = json['orderItems'] as List? ?? [];
     List<OrderItemModel> items =
@@ -86,32 +54,5 @@ class OrderModel {
           : CustomerModel.fromJson(json['customer'] as Map<String, dynamic>),
       orderItems: items,
     );
-  }
-
-  // Your toJson is also perfect for creating a new order. No changes needed.
-  Map<String, dynamic> toJson() {
-    return {
-      'customerId': customer?.customerId, // Use safe operator
-      'downPayment': downPayment,
-      'delivery': delivery,
-      'notes': notes,
-      'orderSource': orderSource,
-      'paymentMethod': paymentMethod,
-      'discount': discount,
-      'items': orderItems.map((item) => item.toJson()).toList(),
-    };
-  }
-
-  Map<String, dynamic> toUpdateJson() {
-    return {
-      'customerId': customerId,
-      'downPayment': downPayment,
-      'notes': notes,
-      'delivery': delivery,
-      'orderSource': orderSource,
-      'paymentMethod': paymentMethod,
-      'discount': discount,
-      'items': orderItems.map((item) => item.toUpdateJson()).toList(),
-    };
   }
 }

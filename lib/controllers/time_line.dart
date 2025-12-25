@@ -57,7 +57,6 @@ class TimelineController extends ChangeNotifier {
   }
 
   void changePage(int index) {
-    print("page changed to $index");
     page = index;
     notifyListeners();
   }
