@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_commerce/services/base_url.dart';
+import 'package:warsha_commerce/services/orders_service.dart';
 import 'package:warsha_commerce/utils/const_values.dart';
+import 'package:warsha_commerce/utils/date.dart';
 import 'package:warsha_commerce/view_models/order_v_m.dart';
+import 'package:warsha_commerce/view_models/user_v_m.dart';
+import 'package:warsha_commerce/views/orders/pdf_view.dart';
 import 'package:warsha_commerce/views/shopping_cart/container_style.dart';
 
 class OrdersHistory extends StatelessWidget {
@@ -9,7 +14,12 @@ class OrdersHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OrderVM>(
+
+    return ChangeNotifierProvider(create: (context) => OrderVM(
+      context.read<OrdersService>(),
+      context.read<UserViewModel>(),
+    ),
+      child: Consumer<OrderVM>(
       builder: (context, orderVM, child) => Scaffold(
         appBar: AppBar(
           title: const Text("طلباتي السابقة", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -19,14 +29,17 @@ class OrdersHistory extends StatelessWidget {
         body: Center(
           child: Container(
             constraints: const BoxConstraints(maxWidth: 600),
-            child: orderVM.isLoading ? const CircularProgressIndicator(
+            child: orderVM.isLoading || orderVM.ordersList == null ? const CircularProgressIndicator(
               color: Colors.black,
               strokeWidth: 2,
-            ) : ListView.separated(
+            ) : orderVM.ordersList!.isEmpty ? Center(child: StyledContainer(
+              padding: const EdgeInsets.all(100),
+              child: Text("لا يوجد طلبات سابقة حتي الان. نحن بانتظار اولي الطلبات"),
+            )) : ListView.separated(
               padding: const EdgeInsets.all(15),
-              itemCount: 5,
+              itemCount: orderVM.ordersList?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
-                return OrderHistoryCard(index: index);
+                return OrderHistoryCard(index: index, orderVM: orderVM,);
               },
               separatorBuilder: (BuildContext context, int index) {
                 return const SizedBox(height: 20);
@@ -35,13 +48,33 @@ class OrdersHistory extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }
 
 class OrderHistoryCard extends StatelessWidget {
   final int index;
-  const OrderHistoryCard({super.key, required this.index});
+  final OrderVM orderVM;
+
+  const OrderHistoryCard({super.key, required this.index, required this.orderVM});
+
+  String getStatus(String status) {
+    switch (status.toLowerCase()) {
+      case "pending":
+        return "قيد الانتظار";
+      case "processing":
+        return "جاري تحضير طلبك";
+      case "shipped":
+        return "تم الشحن";
+      case "completed":
+        return "تم التوصيل";
+      case "cancelled":
+        return "ملغي";
+      default:
+        return status; // Returns the original string if no match is found
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,26 +86,31 @@ class OrderHistoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "طلب رقم #1234$index",
+                " طلب رقم #${orderVM.ordersList![index].orderId}  ",
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              _buildStatusChip(context, index % 2 == 0 ? "مكتمل" : "قيد التوصيل"),
+              _buildStatusChip(context, getStatus(orderVM.ordersList![index].status!)),
             ],
           ),
           const Divider(height: 30),
 
-          _historyRow("التاريخ", "2025-12-$index"),
+          _historyRow("التاريخ", DateHelper.formatDatePicker(orderVM.ordersList![index].orderDate.toString())),
           const SizedBox(height: 10),
-          _historyRow("إجمالي المبلغ", "550.0 EGP"),
+          _historyRow("إجمالي المبلغ", "${orderVM.ordersList![index].totalPrice} جنيه "),
           const SizedBox(height: 10),
-          _historyRow("عدد المنتجات", "3 منتجات"),
+          _historyRow("عدد المنتجات", "${orderVM.ordersList![index].orderItems.length}"),
 
           const SizedBox(height: 20),
 
-          // Reusing the "Apply" button style for "Details"
           InkWell(
             onTap: () {
-              // Navigate to order details
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PDFViewPage(
+                      pdfPath: "${Baseurl.invoiceAPI}/${orderVM.ordersList![index].orderId}"),
+                ),
+              );
             },
             child: Container(
               width: double.infinity,
@@ -83,7 +121,7 @@ class OrderHistoryCard extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  "عرض التفاصيل",
+                  "عرض الفاتورة",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onPrimary,
@@ -108,17 +146,20 @@ class OrderHistoryCard extends StatelessWidget {
   }
 
   Widget _buildStatusChip(BuildContext context, String status) {
-    bool isDone = status == "مكتمل";
+    bool isDone = status == "تم التوصيل";
+    bool isCancelled = status == "ملغي";
+    bool isProcessing = status == "جاري تحضير طلبك";
+    bool isShipped = status == "تم الشحن";
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: isDone ? Colors.green.withAlpha(30) : Colors.orange.withAlpha(30),
+        color: isDone ? Colors.green.withAlpha(30) : isProcessing ? Colors.blue.withAlpha(30) : isShipped ? Colors.black.withAlpha(30) : isCancelled ? Colors.red.withAlpha(30) : Colors.orange.withAlpha(30),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         status,
         style: TextStyle(
-          color: isDone ? Colors.green : Colors.orange,
+          color: isDone ? Colors.green : isProcessing ? Colors.blue : isShipped ? Colors.black : isCancelled ? Colors.red : Colors.orange,
           fontSize: 12,
           fontWeight: FontWeight.bold,
         ),

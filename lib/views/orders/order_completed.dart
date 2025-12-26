@@ -33,7 +33,6 @@ class OrderCompleted extends StatelessWidget {
               children: [
 
                 // Success Animation
-                // _buildSuccessIcon(context),
                 AnimatedSuccessIcon(),
 
                 const SizedBox(height: 30),
@@ -185,7 +184,7 @@ class OrderCompleted extends StatelessWidget {
                 DefaultButton(
                   onTap: () {
                     // Navigate to orders page
-                    Navigator.of(context).pushReplacementNamed('/orders');
+                    Navigator.pushNamed(context, '/orders_history');
                   },
                   title: "عرض طلباتي",
                   margin: EdgeInsets.zero,

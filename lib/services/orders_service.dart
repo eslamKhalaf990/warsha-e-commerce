@@ -35,7 +35,7 @@ class OrdersService {
   }
 
     Future<http.Response> getAllOrders(String token) async {
-      debugPrint("getAllOrders called");
+      debugPrint("getAllOrders called with $token");
       http.Response response;
       try {
         response = await http.get(

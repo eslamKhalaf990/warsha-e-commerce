@@ -9,18 +9,30 @@ class OrderVM extends ChangeNotifier {
   final OrdersService _orderService;
   final UserViewModel _userViewModel;
 
+  List<OrderModel>? ordersList;
 
   bool isLoading = false;
   bool isLogin = true;
 
   OrderVM(this._orderService, this._userViewModel){
-    getCustomerOrder();
+    initOrdersList();
   }
 
-  Future<List<OrderModel>> getCustomerOrder() async {
-    List<OrderModel> ordersList = [];
+  void initOrdersList() async {
+
+    ordersList = await getCustomerOrder();
+  }
+
+  Future<List<OrderModel>?> getCustomerOrder() async {
+     ordersList = [];
     try {
       isLoading = true;
+      notifyListeners();
+
+      if(_userViewModel.token == "-") {
+        await Future.delayed(const Duration(seconds: 2));
+      }
+
       final response = await _orderService.getAllOrders(_userViewModel.token);
       if (response.statusCode == 200) {
         final orders = jsonDecode(response.body);

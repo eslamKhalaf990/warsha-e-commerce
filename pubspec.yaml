@@ -42,6 +42,8 @@ dependencies:
   intl: ^0.20.2
   cached_network_image: ^3.4.1
   flutter_localization: ^0.3.3
+  pdfrx: ^2.2.12
+  printing: ^5.14.2
 
 
 dev_dependencies:

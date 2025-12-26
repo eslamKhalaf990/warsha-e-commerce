@@ -104,7 +104,7 @@ class LoginForm extends StatelessWidget {
                       ),
                     );
 
-                    timeline.changePage(1);
+                    Navigator.pop(context);
                     // Navigate to home or next page here if needed
                   } else {
                     // Failure Feedback

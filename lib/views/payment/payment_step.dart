@@ -18,7 +18,7 @@ class Payment extends StatefulWidget {
 }
 
 class _PaymentState extends State<Payment> {
-  String selectedPaymentMethod = 'cash'; // 'cash' or 'card'
+  String selectedPaymentMethod = 'cash';
 
   // Credit card fields
   final TextEditingController cardNumberController = TextEditingController();
@@ -369,6 +369,8 @@ class _PaymentState extends State<Payment> {
               },
               title: "تأكيد الطلب",
               margin: EdgeInsets.zero,
+              isLoading: Provider.of<CartVM>(context).isLoading,
+              isValid: !Provider.of<CartVM>(context).isLoading,
             ),
           ),
         ],

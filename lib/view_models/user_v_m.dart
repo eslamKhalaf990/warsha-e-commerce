@@ -33,7 +33,7 @@ class UserViewModel extends ChangeNotifier {
       email = userMap['email'] ?? "-";
       governorate = userMap['governorate'] ?? "-";
 
-      notifyListeners(); // Update UI with restored data
+      notifyListeners();
       debugPrint("User state restored from storage");
     }
   }

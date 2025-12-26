@@ -165,7 +165,7 @@ class SignUpForm extends StatelessWidget {
                     ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
                       SnackBar(
                         content: Text('تم إنشاء الحساب بنجاح، يرجى تسجيل الدخول'), // Account created
-                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        backgroundColor: Theme.of(navigatorKey.currentContext!).colorScheme.tertiary,
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
@@ -176,7 +176,7 @@ class SignUpForm extends StatelessWidget {
                     // Optional: Error Feedback
                     ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
                       SnackBar(
-                        content: Text(state), // Error message
+                        content: Text("لم يتم إنشاء الحساب"), // Error message
                         backgroundColor: Colors.red,
                         behavior: SnackBarBehavior.floating,
                       ),
