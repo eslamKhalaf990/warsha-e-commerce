@@ -9,6 +9,8 @@ class ProductVM extends ChangeNotifier {
 
   bool isLoading = false;
 
+  String searchQuery = "";
+
   List<Product>? allProducts;
   List<CategoryModel>? allCategories;
   final TextEditingController searchController = TextEditingController();
@@ -24,6 +26,14 @@ class ProductVM extends ChangeNotifier {
     allProducts = await getAllProducts();
     allCategories = await getAllCategories();
     notifyListeners();
+  }
+
+  List<Product>? get filteredProducts {
+    if (allProducts == null) return null;
+    if (searchQuery.isEmpty) return allProducts;
+    return allProducts!.where((p) =>
+        p.name.toLowerCase().contains(searchQuery.toLowerCase())
+    ).toList();
   }
 
   Future<List<Product>> getAllProducts() async {
@@ -67,6 +77,12 @@ class ProductVM extends ChangeNotifier {
     }
     return categories;
   }
+
+  void setSearchQuery(String query) {
+    searchQuery = query;
+    notifyListeners();
+  }
+
 
   @override
   void dispose() {

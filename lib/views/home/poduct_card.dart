@@ -10,13 +10,13 @@ import 'package:warsha_commerce/view_models/cart_v_m.dart';
 class ProductCard extends StatefulWidget {
   final Product product;
   final bool isMobile;
-  final double imageAspectRatio; // New parameter
+  final double imageAspectRatio;
 
   const ProductCard({
     super.key,
     required this.product,
     required this.isMobile,
-    this.imageAspectRatio = 1.2, // Default if not passed
+    this.imageAspectRatio = 1.2,
   });
 
   @override
@@ -34,8 +34,7 @@ class _ProductCardState extends State<ProductCard>
 
     final int stock = int.tryParse(widget.product.quantity) ?? 0;
     final bool isOutOfStock = stock <= 0;
-    // 1. Get the provider at the top of your build method
-    final cart = Provider.of<CartVM>(context); // Listen is TRUE so it updates instantly
+    final cart = Provider.of<CartVM>(context);
     final isInCart = cart.items.containsKey(widget.product.id);
     final currentQty = isInCart ? cart.items[widget.product.id]!.quantity : 0;
 
@@ -55,9 +54,8 @@ class _ProductCardState extends State<ProductCard>
             ..translate(0.0, _isHovered && !widget.isMobile ? -4.0 : 0.0),
           decoration: BoxDecoration(
             color: Colors.white,
-            // Modern subtle border for structure
             border: Border.all(color: Colors.grey.shade200),
-            borderRadius: Constants.BORDER_RADIUS_5, // Slight rounding looks more premium
+            borderRadius: Constants.BORDER_RADIUS_5,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(_isHovered ? 0.08 : 0.0),

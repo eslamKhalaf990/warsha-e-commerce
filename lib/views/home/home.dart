@@ -13,7 +13,6 @@ class Home extends StatelessWidget {
     return Scaffold(
       body: Consumer<ProductVM>(
         builder: (context, vm, child) {
-          // --- Loading State ---
           if (vm.isLoading) {
             return Center(
               child: CircularProgressIndicator(
@@ -23,19 +22,13 @@ class Home extends StatelessWidget {
             );
           }
 
-          // --- Empty State ---
           if (vm.allProducts == null || vm.allProducts!.isEmpty) {
             return _buildEmptyState();
           }
 
-          // --- Main Content ---
-          // Inside Home widget build method...
-
           return LayoutBuilder(
             builder: (context, constraints) {
               final double width = constraints.maxWidth;
-
-              // --- 1. Breakpoints & Column Logic ---
               int crossAxisCount;
               double horizontalPadding;
 
@@ -50,24 +43,14 @@ class Home extends StatelessWidget {
                 horizontalPadding = 64;
               } else {
                 crossAxisCount = 5;
-                horizontalPadding = (width - 1400) / 2; // Center content on huge screens
+                horizontalPadding = (width - 1400) / 2;
               }
-
-              // --- 2. The "Brilliant" Aspect Ratio Formula ---
-              // We calculate exactly how wide one card is in pixels
               double cardWidth = (width - (horizontalPadding * 2) - ((crossAxisCount - 1) * 20)) / crossAxisCount;
-
-              // We define the expected fixed height of content (Text, Price, Buttons)
-              // E.g., ~130px for title, category, price, and padding.
               const double fixedContentHeight = 145.0;
-
-              // We decide the Image Aspect Ratio (e.g., images are 1:1 or 3:4)
-              // If your product images are square, use 1.0. If portrait, use 1.2 or 1.3.
-              const double imageAspectRatio = 1.2; // Image height = width * 1.2
+              const double imageAspectRatio = 1.2;
 
               double cardHeight = (cardWidth * imageAspectRatio) + fixedContentHeight;
 
-              // Final Grid Aspect Ratio
               double childAspectRatio = cardWidth / cardHeight;
 
               return CustomScrollView(
@@ -79,22 +62,31 @@ class Home extends StatelessWidget {
                       horizontal: horizontalPadding,
                       vertical: 24,
                     ),
-                    sliver: SliverGrid(
+                    sliver: vm.filteredProducts!.isEmpty
+                        ? const SliverToBoxAdapter(child: Center(child: Text("No products found")))
+                        : SliverGrid(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: crossAxisCount,
-                        childAspectRatio: childAspectRatio, // <--- DYNAMIC!
-                        crossAxisSpacing: 20, // Horizontal space between cards
-                        mainAxisSpacing: 24,  // Vertical space between cards
+                        childAspectRatio: childAspectRatio,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 24,
                       ),
                       delegate: SliverChildBuilderDelegate(
                             (context, index) {
-                          return ProductCard(
-                            product: vm.allProducts![index],
-                            isMobile: width < 600,
-                            imageAspectRatio: imageAspectRatio,
+                          final product = vm.filteredProducts![index];
+
+                          // Adding a Fade-in Animation for new search results
+                          return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: ProductCard(
+                              key: ValueKey(product.id), // Important for animations
+                              product: product,
+                              isMobile: width < 600,
+                              imageAspectRatio: imageAspectRatio,
+                            ),
                           );
                         },
-                        childCount: vm.allProducts!.length,
+                        childCount: vm.filteredProducts!.length,
                       ),
                     ),
                   ),
